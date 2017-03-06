@@ -5,6 +5,9 @@ Apache 2.4, PHP 7.0, MySQL 5.6, Node.js, npm
 # Standards
 For development code standards see https://github.com/DontPanicDigital/standards.
 
+# Bin
+For faster development, you can use the following binaries https://github.com/DontPanicDigital/bin.
+
 # Git
 
 Run this command
@@ -37,7 +40,7 @@ Redis is enabled by default for Journal, Storage and Sessions. Just setup Redis 
 
 On production environment, DB `0` is used for Journal and Storage. DB `1` for sessions.
 
-For localhost, use whatever you want. There's `bin/redis_clear_cache.sh` script you can use to quickly flush your local Redis. Eg. `./bin/redis_flushdb.sh 1` flushes DB `1`. When no argument is provided, default is `0`.
+For localhost, use whatever you want. There's `https://github.com/DontPanicDigital/bin` script you can use to quickly flush your local Redis from PhpStorm.
 
 If you do not use Redis on a local machine, you can turn it off in section Redis `/app/config/parameters.neon`.
 
