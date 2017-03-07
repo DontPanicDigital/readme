@@ -26,7 +26,7 @@ Copy `/.htaccess.dist` to a new file `/.htaccess` and edit it.
 
 Copy `/app/config/parameters.neon.dist` to a new file `/app/config/parameters.neon` and edit it.
 
-Copy `/react/config/index.js.dist` to a new file `/react/config/index.js` and edit it:
+Copy `/react/src/confg.js.dist` to a new file `/react/src/confg.js` and edit it:
 
 * Set host to match your localhost setup.
 
