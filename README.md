@@ -63,3 +63,9 @@ Then implement `down()` method to revert schema back to original state.
 #### Run Migrations
 
 To run new migrations, run `php www/index.php migrations:migrate`. This command is also called automatically when running `composer install`.
+
+# Git flow
+
+In our projects we use enhanced git system name git flow. Every project should be a git flow repo (you can turn classic repo into git-flow enabled one via command `git flow init`)
+For more informations about git flow, installation process and usage visit `https://danielkummer.github.io/git-flow-cheatsheet/`
+Our branches names are separated by `-` (example: `feature-new-feature` or `realease-v1.3.0`). There is no "version prefix" (one of `git init` questions), but we add it manually.
