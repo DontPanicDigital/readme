@@ -48,24 +48,101 @@ If you do not use Redis on a local machine, you can turn it off in section Redis
 
 Whenever you need to change something in the database (for example you create or change some entity), you have to define new migrations file.
 
-To learn more about `doctrine/migrations`, see http://docs.doctrine-project.org/projects/doctrine-migrations/en/latest/index.html.
+For migrations we now user [Phinx](https://phinx.org/). 
+[Docs for Phinx](http://docs.phinx.org/en/latest/) are really detailed and full of usefull info and shortcuts
+
+
+#### Database Init
+
+To init database setup connection detail in `app/config/parameters.neon` (template `app/config/parameters.neon.dist`) and run:
+```bash
+php www/index.php dbal:import database.sql 
+```
 
 #### Define Migrations
 
-To generate new migrations file, run `php www/index.php migrations:generate`.
-After generating new file, edit it to run desired SQL code.
-Don't forget to implement both `up()` and `down()` methods to ensure that the new changes can be reverted.
+Please read the manual for Phinx to understand it's capabilities. Please use `change()` method to write your migrations if possible, otherwise implemetn bot `up()` and `down()` methods.
+More info can be found at [creating migrations](http://docs.phinx.org/en/latest/migrations.html#creating-a-new-migration).
+
+Basically, to generate a migration you have to run followint command in root dir of application:
+```bash
+php vendor/bin/phinx create [MigrationName]
+```
+[MigrationName] -> Migration name have to be descriptive name of what migration does and it have to be written in camel case.
+Afterwards, the new migration with date prefix and camel-case name can be found in `migrations/` folder; 
 
 The most common reason to create new migrations is, when you create or edit some entity.
-Run `php www/index.php orm:schema-tool:update --dump-sql` to get SQL code. Then copy it to the new migrations file.
-Then implement `down()` method to revert schema back to original state.
-
+To retrive changes in schema against current database state run:
+```bash
+php www/index.php orm:schema-tool:update --dump-sql
+```
 #### Run Migrations
 
-To run new migrations, run `php www/index.php migrations:migrate`. This command is also called automatically when running `composer install`.
+To run new migrations, run: 
+```bash
+php vendor/bin/phinx migrate
+```
+
+To rollback to previous state:
+```bash
+php vendor/bin/phinx rollback
+```
 
 # Git flow
 
 In our projects we use enhanced git system name git flow. Every project should be a git flow repo (you can turn classic repo into git-flow enabled one via command `git flow init`)
 For more informations about git flow, installation process and usage visit `https://danielkummer.github.io/git-flow-cheatsheet/`
 Our branches names are separated by `-` (example: `feature-new-feature` or `realease-v1.3.0`). There is no "version prefix" (one of `git init` questions), but we add it manually.
+
+# Deploy
+To be able to deploy you have to be allowed to access servers you want to deploy to (be able to log in via ssh).
+
+## Legacy
+For deploy of legacy projects (projects with older `dep-deployer` than `^5.0`) use following command to run deploy from folder `.deploy`
+```bash
+php ../vendor/bin/dep deploy
+```
+
+## Basic deploy
+We distinguish 3 types of deploys:
+
+### Staging (a.k.a Development)
+(usage of speical params : [DOCS - Branch param](https://deployer.org/docs/configuration#branch))
+```bash
+dep deploy [--branch=feature-featureName] [--tag="v0.1"] [--revision="5daefb59edbaa75"]
+```
+
+### Production
+```bash
+dep deploy production [--branch=feature-featureName] [--tag="v0.1"] [--revision="5daefb59edbaa75"]
+```
+
+### Local
+```bash
+dep local local [--branch=feature-featureName] [--tag="v0.1"] [--revision="5daefb59edbaa75"]
+```
+
+## Mics
+#### Help
+Deployer itself has built-in support for help for commands:
+```bash
+dep help deploy
+```
+
+#### Config
+If you want to see your current hosts setup for deployment run:
+```bash
+dep config:hosts 
+```
+
+#### Available tasks
+If you want to see all tasks that are available for deploy run:
+```bash
+dep list
+```
+
+#### Update
+To update your deployer to most recent version run:
+```bash
+dep self-update --upgrade 
+```
